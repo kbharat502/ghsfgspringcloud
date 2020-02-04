@@ -1,9 +1,10 @@
-package com.bharat.msscbrewery.web.model;
+package com.bharat.msscbrewery.web.model.v2;
 
 import java.util.UUID;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.Null;
+import javax.validation.constraints.Positive;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,11 +15,17 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class CustomerDto {
+public class BeerDtoV2 {
 
+	@Null
 	private UUID id;
 	
 	@NotBlank
-	@Size(min = 3, max = 100)
-	private String customerName;
+	private String beerName;
+	
+	@NotBlank
+	private BeerStyleEnum beerStyle;
+	
+	@Positive
+	private Long upc;
 }

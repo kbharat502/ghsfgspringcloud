@@ -26,16 +26,23 @@ import org.springframework.web.bind.annotation.RestController;
 import com.bharat.msscbrewery.services.v2.BeerServiceV2;
 import com.bharat.msscbrewery.web.model.v2.BeerDtoV2;
 
+import lombok.RequiredArgsConstructor;
+import lombok.val;
+import lombok.extern.log4j.Log4j2;
+
+@Log4j2
 @Validated
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/v2/beer")
 public class BeerControllerV2 {
 	
 	private final BeerServiceV2 beerService;
 
-	public BeerControllerV2(BeerServiceV2 beerService) {
-		this.beerService = beerService;
-	}
+	/*
+	 * public BeerControllerV2(BeerServiceV2 beerService) { this.beerService =
+	 * beerService; }
+	 */
 
 	@GetMapping("/{beerId}")
 	public ResponseEntity<BeerDtoV2> getBeer(@NotNull @PathVariable("beerId") UUID beerId) {
@@ -44,9 +51,12 @@ public class BeerControllerV2 {
 	
 	@PostMapping  //POST - create new beer.
 	public ResponseEntity<?> handlePost(@Valid @NotNull @RequestBody BeerDtoV2 beerDto) {
-		BeerDtoV2 savedDto = beerService.saveNewBeer(beerDto);
 		
-		HttpHeaders headers = new HttpHeaders();
+		log.debug("In handle post...");
+		
+		val savedDto = beerService.saveNewBeer(beerDto);
+		
+		var headers = new HttpHeaders();
 		//TODO: add hostname to URL.
 		headers.add("Location", "/api/v2/beer/" + savedDto.getId());
 		
